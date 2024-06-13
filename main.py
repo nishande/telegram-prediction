@@ -3,7 +3,7 @@ import re
 import json
 from datetime import datetime
 import pytz
-
+import emoji
 # Load the config data from config.json
 with open('config.json') as f:
     config = json.load(f)
@@ -44,7 +44,12 @@ async def display_predictions(parsed_data):
 
     # Send message to bot if next_amount is greater than equal 27
     if next_amount >= 27:
-        message_to_send = f"Next Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}X"
+        red_emoji = emoji.emojize(":cross_mark:")  # ❌
+        alert_message = "DON'T MISS THIS!!!"
+        message_to_send = f"{red_emoji}Alert: {alert_message}{red_emoji}\nNext Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}"
+        await client.send_message(bot_username, message_to_send)
+    else:
+        message_to_send = f"Next Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}"
         await client.send_message(bot_username, message_to_send)
 
     # Display previous predictions
