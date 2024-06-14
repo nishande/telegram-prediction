@@ -53,7 +53,7 @@ async def display_predictions(parsed_data):
         message_to_send = f"{red_emoji}Alert: {alert_message}{red_emoji}\nNext Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}x"
         await client.send_message(bot_username, message_to_send)
     else:
-        message_to_send = f"Next Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}"
+        message_to_send = f"Next Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}x"
         await client.send_message(bot_username, message_to_send)
 
     # Display previous predictions
