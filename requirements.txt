@@ -1,2 +1,4 @@
 telethon
 pytz
+emoji
+Flask
