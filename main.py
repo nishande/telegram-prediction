@@ -7,7 +7,7 @@ import emoji
 import asyncio
 import calendar
 # Load the config data from config.json
-with open('bot/config.json') as f:
+with open('config.json') as f:
     config = json.load(f)
 
 # Extract the values from the config
