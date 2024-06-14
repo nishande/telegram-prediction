@@ -1,0 +1,11 @@
+# Ignore Python compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore Python virtual environment directories
+venv/
+env/
+
+# Ignore files ending with .session
+*.session
