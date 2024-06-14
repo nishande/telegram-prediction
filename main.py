@@ -5,7 +5,7 @@ from datetime import datetime
 import pytz
 import emoji
 # Load the config data from config.json
-with open('bot/config.json') as f:
+with open('config.json') as f:
     config = json.load(f)
 
 # Extract the values from the config
