@@ -5,8 +5,9 @@ from datetime import datetime
 import pytz
 import emoji
 import asyncio
+import calendar
 # Load the config data from config.json
-with open('config.json') as f:
+with open('bot/config.json') as f:
     config = json.load(f)
 
 # Extract the values from the config
@@ -89,17 +90,23 @@ async def send_scheduled_messages():
     thumbs_up = emoji.emojize(":thumbs_up:") # 👍 Thumbs Up
     while True:
         current_time = datetime.now(pytz.timezone('Asia/Kolkata'))
+        current_date = (current_time.date()).strftime('%d/%m/%Y')
+        day_of_week = calendar.day_name[(current_time.date()).weekday()]
         if current_time.hour == 22 and current_time.minute == 40:
             message = f"{victory_emoji} That's all for today.{victory_emoji}\n\nScript created by @myselfnixon"
             await client.send_message(bot_username, message)
         elif current_time.hour == 11 and current_time.minute == 30:
             message = f"Predictions will start soon. Be ready. Good Luck{thumbs_up}\n\nScript created by @myselfnixon"
             await client.send_message(bot_username, message)
-        await asyncio.sleep(60)  # Check every minute
+        elif current_time.hour == 8 and current_time.minute == 30:
+            message = f"{current_date}\nGood Morning!!!\nHappy {day_of_week}{victory_emoji}"
+            await client.send_message(bot_username, message)
+        await asyncio.sleep(50)  # Check every minute
 
 # Run the client
 async def main():
     await fetch_last_message()
+    asyncio.create_task(send_scheduled_messages())
     await client.run_until_disconnected()
 
 with client:
