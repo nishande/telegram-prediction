@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import pytz
 import emoji
+import asyncio
 # Load the config data from config.json
 with open('config.json') as f:
     config = json.load(f)
@@ -41,12 +42,15 @@ async def display_predictions(parsed_data):
     # Display the next prediction
     print(f"Next Prediction for Period {last_period}: {next_prediction}")
     print(f"Amount: {next_amount}\n")
-
+    if next_amount == 1:
+        victory_emoji = emoji.emojize(":party_popper:")  # 🎉
+        message_to_send = f"{victory_emoji}"
+        await client.send_message(bot_username, message_to_send)
     # Send message to bot if next_amount is greater than equal 27
     if next_amount >= 27:
         red_emoji = emoji.emojize(":cross_mark:")  # ❌
         alert_message = "DON'T MISS THIS!!!"
-        message_to_send = f"{red_emoji}Alert: {alert_message}{red_emoji}\nNext Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}"
+        message_to_send = f"{red_emoji}Alert: {alert_message}{red_emoji}\nNext Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}x"
         await client.send_message(bot_username, message_to_send)
     else:
         message_to_send = f"Next Prediction for Period {last_period}: {next_prediction}\nAmount: {next_amount}"
@@ -78,6 +82,20 @@ async def handler(event):
     print(f"Message received at: {timestamp}")
     parsed_data = parse_message(message)
     await display_predictions(parsed_data)
+
+# Function to send scheduled messages
+async def send_scheduled_messages():
+    victory_emoji = emoji.emojize(":victory_hand:")  # ✌️
+    thumbs_up = emoji.emojize(":thumbs_up:") # 👍 Thumbs Up
+    while True:
+        current_time = datetime.now(pytz.timezone('Asia/Kolkata'))
+        if current_time.hour == 22 and current_time.minute == 40:
+            message = f"{victory_emoji} That's all for today.{victory_emoji}\n\nScript created by @myselfnixon"
+            await client.send_message(bot_username, message)
+        elif current_time.hour == 11 and current_time.minute == 30:
+            message = f"Predictions will start soon. Be ready. Good Luck{thumbs_up}\n\nScript created by @myselfnixon"
+            await client.send_message(bot_username, message)
+        await asyncio.sleep(60)  # Check every minute
 
 # Run the client
 async def main():
